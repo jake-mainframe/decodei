@@ -42,7 +42,7 @@ decodeInst: procedure expose g.
 /*
    Opcodes can only come from certain places in an instruction:
    Instruction   Type (for the purposes of this disassembler)
-   ------------  ---- 
+   ------------  ----
    aa..........   1
    bbbb........   2
    cc.c........   3
@@ -119,7 +119,7 @@ decodeInst: procedure expose g.
     when sMnemonic = 'DIAG' then do
       g.0DIAG = 1                     /* Insert a DIAG macro (for z/OS) */
                /* ...because HLASM does not support a DIAGNOSE mnemonic */
-    end      
+    end
     when sMnemonic = 'L' & X2=0 & B2=0 & D2 = '010' then do
       sDesc = sDesc '-> CVT'
     end
@@ -172,12 +172,12 @@ decodeInst: procedure expose g.
       sExt = g.0EXTC.M3 /* Convert mask to extended mnemonic suffix     */
       if sExt <> ''    /* If an extended mnemonic exists for this inst  */
       then do          /* Then rebuild operands without the M3 mask     */
-        if sFormat = 'RIEc'  
+        if sFormat = 'RIEc'
         then o = r(R1) u(I2) sTarget
         else o = r(R1) r(R2) sTarget
       end
       else do
-        if sFormat = 'RIEc'  
+        if sFormat = 'RIEc'
         then o = r(R1) u(I2) m(M3) sTarget
         else o = r(R1) r(R2) m(M3) sTarget
       end
@@ -214,7 +214,7 @@ decodeInst: procedure expose g.
         end
       end
     end
-    otherwise nop 
+    otherwise nop
   end
   say sMnemonic sOperands
 return nLen
@@ -388,7 +388,7 @@ t: procedure expose g. /* Operand length hint */
         if g.0CLENG.xTarget = ''
         then g.0CLENG.xTarget = nLength
         else g.0CLENG.xTarget = max(g.0CLENG.xTarget,nLength)
-        if g.0CTYPE.xTarget = '' 
+        if g.0CTYPE.xTarget = ''
         then g.0CTYPE.xTarget = sType
         call refLabel ,xTarget
       end
@@ -471,8 +471,6 @@ u: procedure expose g.  /* Unsigned integer */
   if n < 64 then return n       /* 00 to 3F: return a decimal        */
   if n = 64 then return "C'"g.0HARDBLANK"'" /* 40: return hard blank */
   sData = x2c(xData)            /* 41 to FF                          */
-  if isText(sData)
-  then return 'C'quote(sData)   /* Return character if text          */
 return "X'"xData"'"             /* else return hex                   */
 
 v: procedure expose g.  /* 1-nibble vector register V0 to V31        */
@@ -514,7 +512,7 @@ getLabelRel: procedure expose g.
   if nTarget < 0 then nTarget = 0
   xTarget = d2x(nTarget)
   sLabel = refLabel(label(xTarget),xTarget)
-return sLabel  
+return sLabel
 
 getLabel: procedure expose g.    /* Label name for this hex location */
   arg xLoc
@@ -762,7 +760,7 @@ prolog:
   g.0APOST2 = '7D7D'x                      /* ''         */
   g.0AMP    = '50'x                        /* &          */
   g.0AMP2   = '5050'x                      /* &&         */
-  
+
 return
 
 
@@ -826,7 +824,7 @@ return
 
 addInst: procedure expose g.
   parse arg sMnemonic,xOpCode,sFormat,sFlag,sArch,sDesc,sHint
-  if pos(g.0ARCH,sArch) > 0 
+  if pos(g.0ARCH,sArch) > 0
   then do /* Instruction is implemented in this architecture */
     g.0INST.0 = g.0INST.0 + 1
     if g.0MNEM.sMnemonic <> ''
@@ -1389,7 +1387,7 @@ specifying:
                     |    S = Select instructions
                     |    c = Sets condition code
                     |    . = Does not set condition code
-                    |  
+                    |
                     | .- Instruction is valid on architecture:
                     | |  6 = System/360
                     | |  7 = System/370
